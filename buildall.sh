@@ -2,7 +2,7 @@
 OUTDIR=
 SOURCE=
 
-build_all() {
+function build_all() {
   OUTDIR=~/COMPLETED
   SOURCE=~/WORKING_DIRECTORY
   BEGIN=$(date +%s)
@@ -11,7 +11,7 @@ build_all() {
   for ROM in ${ROMS}
   do 
     repo init -u https://github.com/InterestingTwist/${ROM}_manifest.git 
-    repo sync -j4
+    repo sync -j4 --force-sync
     source build/envsetup.sh
     mka clean
     # Build the below devices 
@@ -23,10 +23,9 @@ build_all() {
       mka clean
     done
   done
-  
-    # End
-    END=$(date +%s)
-    cd ~/
-    echo "${green}All builds complete!${reset}"
-    echo "${green}Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}')${reset}"
+  # End
+  END=$(date +%s)
+  cd ~/
+  echo "${green}All builds complete!${reset}"
+  echo "${green}Total time elapsed: $(echo $(($END-$BEGIN)) | awk '{print int($1/60)"mins "int($1%60)"secs "}')${reset}"
 }
